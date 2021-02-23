@@ -54,6 +54,7 @@ export default {
       resources: this.storedResources,
       // We can also provide the addResource function instead of listening to emit
       addResource: this.addResource,
+      deleteResource: this.deleteResource,
     };
   },
   computed: {
@@ -71,6 +72,23 @@ export default {
     addResource(resourceObj) {
       this.storedResources.unshift(resourceObj);
       this.setSelectedTab("stored-resources");
+    },
+    deleteResource(resourceId) {
+      // THIS DOES NOT WORK BECAUSE OF HOW PROVIDE/INJECT WORKS
+      // Vue execute the provide method in the end when it creates this component
+      // So it then injects this storedResources array in all the components that need it
+      // The thing is storedResources is an array and thus a value stored in memory (reference value)
+      // When we push() or unshift(), we're changing the same array in memory and Vue is able to recognize the change
+      // However, this approach overwrites the array and Vue does not detect the change
+      // this.storedResources = this.storedResources.filter(
+      //   (resource) => resource.id !== resourceId
+      // );
+
+      const resourceIndex = this.storedResources.findIndex(
+        (resource) => resource.id === resourceId
+      );
+      // Manipulates the original array
+      this.storedResources.splice(resourceIndex, 1);
     },
   },
 };
