@@ -6,10 +6,6 @@ export default {
       userEmail: payload.email,
       message: payload.message,
     };
-    console.log(
-      "🚀 ~ file: actions.js ~ line 10 ~ contactCoach ~ newRequest",
-      newRequest
-    );
 
     context.commit("addRequest", newRequest);
   },
