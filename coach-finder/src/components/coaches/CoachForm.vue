@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent>
+  <form @submit.prevent="submitForm">
     <div class="form-control" :class="{ invalid: !firstName.isValid }">
       <label id="firstName">First Name</label>
       <input
@@ -75,7 +75,7 @@
       <p v-if="!areas.isValid">At least one experise must be selected.</p>
     </div>
     <p v-if="!formIsValid">Please fix the above errors and submit again.</p>
-    <base-button @click="submitForm">Register</base-button>
+    <base-button>Register</base-button>
   </form>
 </template>
 
