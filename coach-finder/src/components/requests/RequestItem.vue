@@ -12,8 +12,6 @@ export default {
   props: ["email", "message"],
   computed: {
     emailLink() {
-      console.log(this.email);
-      console.log(this.message);
       // Browser automatically opens email client
       return "mailto:" + this.email;
     },
