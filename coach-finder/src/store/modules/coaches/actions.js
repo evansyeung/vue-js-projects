@@ -35,7 +35,9 @@ export default {
     const responseData = await response.json();
 
     if (!response.ok) {
-      // error...
+      const error = new Error(responseData.message || "Failed to fetch!");
+      // Whenever an error is thrown in this dispatch action the component that dispatched it can handle it
+      throw error;
     }
 
     const coaches = [];

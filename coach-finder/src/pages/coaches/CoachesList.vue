@@ -1,4 +1,8 @@
 <template>
+  <!-- !! converts a string (truthy value) into a real true boolean -->
+  <base-dialog :show="!!error" title="An error ocurred!" @close="handleError">
+    <p>{{ error }}</p>
+  </base-dialog>
   <section>
     <coach-filter></coach-filter>
   </section>
@@ -33,15 +37,18 @@
 import CoachItem from "../../components/coaches/CoachItem.vue";
 import CoachFilter from "../../components/coaches/CoachFilter.vue";
 import { mapGetters, mapActions } from "vuex";
+import BaseDialog from "../../components/ui/BaseDialog.vue";
 
 export default {
   components: {
     CoachItem,
     CoachFilter,
+    BaseDialog,
   },
   data() {
     return {
       isLoading: false,
+      error: null,
     };
   },
   computed: {
@@ -49,11 +56,20 @@ export default {
   },
   async created() {
     this.isLoading = true;
-    await this.loadCoaches();
+
+    try {
+      await this.loadCoaches();
+    } catch (error) {
+      this.error = error.message || "Something went wrong!";
+    }
+
     this.isLoading = false;
   },
   methods: {
     ...mapActions("coaches", ["loadCoaches"]),
+    handleError() {
+      this.error = null;
+    },
   },
 };
 </script>
