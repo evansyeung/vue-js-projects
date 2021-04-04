@@ -27,4 +27,37 @@ export default {
       id: userId,
     });
   },
+  async loadCoaches(context) {
+    const response = await fetch(
+      "https://vue-http-demo-881d5-default-rtdb.firebaseio.com/coaches.json"
+    );
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      // error...
+    }
+
+    const coaches = [];
+
+    for (const key in responseData) {
+      const {
+        firstName,
+        lastName,
+        description,
+        hourlyRate,
+        areas,
+      } = responseData[key];
+      coaches.push({
+        id: key,
+        firstName,
+        lastName,
+        description,
+        hourlyRate,
+        areas,
+      });
+    }
+
+    context.commit("setCoaches", coaches);
+  },
 };
