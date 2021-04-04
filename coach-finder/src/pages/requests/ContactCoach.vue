@@ -1,4 +1,8 @@
 <template>
+  <!-- !! converts a string (truthy value) into a real true boolean -->
+  <base-dialog :show="!!error" title="An error ocurred!" @close="handleError">
+    <p>{{ error }}</p>
+  </base-dialog>
   <form @submit.prevent="submitForm">
     <div class="form-control" :class="{ invalid: !email.isValid }">
       <label for="email">Email</label>
@@ -36,6 +40,7 @@ export default {
       email: { value: "", isValid: true },
       message: { value: "", isValid: true },
       formIsValid: true,
+      error: null,
     };
   },
   methods: {
@@ -55,19 +60,29 @@ export default {
         this.formIsValid = false;
       }
     },
-    submitForm() {
+    async submitForm() {
       this.validateForm();
 
       if (!this.formIsValid) {
         return;
       }
 
-      this.$store.dispatch("requests/contactCoach", {
-        email: this.email.value,
-        message: this.message.value,
-        coachId: this.$route.params.id,
-      });
-      this.$router.replace("/coaches");
+      try {
+        await this.$store.dispatch("requests/contactCoach", {
+          email: this.email.value,
+          message: this.message.value,
+          coachId: this.$route.params.id,
+        });
+      } catch (error) {
+        this.error = error.message || "Something went wrong!";
+      }
+
+      if (!this.error) {
+        this.$router.replace("/coaches");
+      }
+    },
+    handleError() {
+      this.error = null;
     },
   },
 };
