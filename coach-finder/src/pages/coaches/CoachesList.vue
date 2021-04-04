@@ -6,11 +6,14 @@
     <base-card>
       <div class="controls">
         <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
-        <base-button v-if="!isCoach" link to="/register"
+        <base-button v-if="!isCoach && !isLoading" link to="/register"
           >Register as Coach</base-button
         >
       </div>
-      <ul v-if="hasCoaches">
+      <div v-if="isLoading">
+        <base-spinner></base-spinner>
+      </div>
+      <ul v-else-if="!isLoading && hasCoaches">
         <coach-item
           v-for="coach in filteredCoaches"
           :key="coach.id"
@@ -36,11 +39,18 @@ export default {
     CoachItem,
     CoachFilter,
   },
+  data() {
+    return {
+      isLoading: false,
+    };
+  },
   computed: {
     ...mapGetters("coaches", ["filteredCoaches", "hasCoaches", "isCoach"]),
   },
-  created() {
-    this.loadCoaches();
+  async created() {
+    this.isLoading = true;
+    await this.loadCoaches();
+    this.isLoading = false;
   },
   methods: {
     ...mapActions("coaches", ["loadCoaches"]),
