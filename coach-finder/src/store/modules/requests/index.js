@@ -5,7 +5,10 @@ import getters from "./getters.js";
 export default {
   namespaced: true,
   state() {
-    return { requests: [] };
+    return {
+      lastFetched: null,
+      requests: [],
+    };
   },
   mutations,
   actions,

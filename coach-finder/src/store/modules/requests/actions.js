@@ -30,9 +30,14 @@ export default {
     context.commit("addRequest", newRequest);
   },
   async loadRequests(context) {
+    // Avoid making another API call if lastFetched was within 1min ago
+    if (!context.getters.shouldLoadRequests) {
+      return;
+    }
+
     const coachId = context.rootGetters.userId;
     const response = await fetch(
-      `https://vue-http-demo-881d5-default-rtdb.firebaseio.com/requests/${coachId}.jso`
+      `https://vue-http-demo-881d5-default-rtdb.firebaseio.com/requests/${coachId}.json`
     );
 
     const responseData = await response.json();
@@ -58,5 +63,6 @@ export default {
     }
 
     context.commit("setRequests", requests);
+    context.commit("setLastFetched");
   },
 };

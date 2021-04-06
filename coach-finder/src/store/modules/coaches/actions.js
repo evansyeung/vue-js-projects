@@ -27,7 +27,13 @@ export default {
       id: userId,
     });
   },
-  async loadCoaches(context) {
+  async loadCoaches(context, payload) {
+    const { forcedRefresh } = payload;
+    // Avoid making another API call if lastFetched was within 1min ago
+    if (!forcedRefresh && !context.getters.shouldLoadCoaches) {
+      return;
+    }
+
     const response = await fetch(
       "https://vue-http-demo-881d5-default-rtdb.firebaseio.com/coaches.json"
     );
@@ -61,5 +67,6 @@ export default {
     }
 
     context.commit("setCoaches", coaches);
+    context.commit("setLastFetched");
   },
 };

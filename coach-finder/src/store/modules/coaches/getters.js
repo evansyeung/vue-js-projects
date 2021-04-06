@@ -35,4 +35,14 @@ export default {
     const userId = rootGetters.userId;
     return coaches.some((coach) => coach.id === userId);
   },
+  shouldLoadCoaches(state) {
+    const lastFetched = state.lastFetched;
+    if (!lastFetched) {
+      return true;
+    }
+
+    const currentTimeStamp = new Date().getTime();
+    // Check if lastFetched over 1 minute ago
+    return (currentTimeStamp - lastFetched) / 1000 > 60;
+  },
 };
