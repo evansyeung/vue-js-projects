@@ -1,27 +1,29 @@
 <template>
-  <!-- !! converts a string (truthy value) into a real true boolean -->
-  <base-dialog :show="!!error" title="An error ocurred!" @close="handleError">
-    <p>{{ error }}</p>
-  </base-dialog>
-  <section>
-    <base-card>
-      <header>
-        <h2>Requests Received</h2>
-      </header>
-      <div v-if="isLoading">
-        <base-spinner></base-spinner>
-      </div>
-      <ul v-else-if="hasRequests && !isLoading">
-        <request-item
-          v-for="request in requests"
-          :key="request.id"
-          :email="request.userEmail"
-          :message="request.message"
-        ></request-item>
-      </ul>
-      <h3 v-else>You haven't received any request yet!</h3>
-    </base-card>
-  </section>
+  <div>
+    <!-- !! converts a string (truthy value) into a real true boolean -->
+    <base-dialog :show="!!error" title="An error ocurred!" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
+    <section>
+      <base-card>
+        <header>
+          <h2>Requests Received</h2>
+        </header>
+        <div v-if="isLoading">
+          <base-spinner></base-spinner>
+        </div>
+        <ul v-else-if="hasRequests && !isLoading">
+          <request-item
+            v-for="request in requests"
+            :key="request.id"
+            :email="request.userEmail"
+            :message="request.message"
+          ></request-item>
+        </ul>
+        <h3 v-else>You haven't received any request yet!</h3>
+      </base-card>
+    </section>
+  </div>
 </template>
 
 <script>
