@@ -53,13 +53,20 @@ export default {
 
       if (
         this.email === "" ||
-        !this.email.inclues("@") ||
+        !this.email.includes("@") ||
         this.password.length < 6 // Firebase min password length is 6
       ) {
         this.formIsValid = false;
       }
 
-      // send http request
+      if (this.mode === "login") {
+        //
+      } else {
+        this.$store.dispatch("signUp", {
+          email: this.email,
+          password: this.password,
+        });
+      }
     },
     switchAuthMode() {
       if (this.mode === "login") {
