@@ -84,6 +84,9 @@ export default {
         } else {
           await this.$store.dispatch("signUp", payload);
         }
+
+        const redirectUrl = "/" + (this.$route.query.redirect || "coaches");
+        this.$router.replace(redirectUrl);
       } catch (error) {
         this.error = error.message || "Failed to authenticate, try later.";
       }
