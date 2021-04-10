@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, defineAsyncComponent } from "vue";
 import router from "./router.js";
 import store from "./store/index.js";
 import App from "./App.vue";
@@ -6,7 +6,12 @@ import BaseCard from "./components/ui/BaseCard.vue";
 import BaseButton from "./components/ui/BaseButton.vue";
 import BaseBadge from "./components/ui/BaseBadge.vue";
 import BaseSpinner from "./components/ui/BaseSpinner.vue";
-import BaseDialog from "./components/ui/BaseDialog.vue";
+
+// defineAsyncComponent we can define a component that is loaded async (only when its needed - lazy loading)
+// import is only executed by Vue when the component is needed/used
+const BaseDialog = defineAsyncComponent(() =>
+  import("./components/ui/BaseDialog.vue")
+);
 
 const app = createApp(App);
 
