@@ -15,7 +15,13 @@
             @click="loadCoaches({ forcedRefresh: true })"
             >Refresh</base-button
           >
-          <base-button v-if="!isCoach && !isLoading" link to="/register"
+          <base-button link to="/auth" v-if="!isAuthenticated"
+            >Login</base-button
+          >
+          <base-button
+            v-if="isAuthenticated && !isCoach && !isLoading"
+            link
+            to="/register"
             >Register as Coach</base-button
           >
         </div>
@@ -59,6 +65,7 @@ export default {
   },
   computed: {
     ...mapGetters("coaches", ["filteredCoaches", "hasCoaches", "isCoach"]),
+    ...mapGetters(["isAuthenticated"]),
   },
   async created() {
     this.isLoading = true;
